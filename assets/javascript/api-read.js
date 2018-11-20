@@ -40,14 +40,14 @@ $(function () {
     //create column
     function createCol() {
         gifDivCol = $("<div>");
-        gifDivCol.addClass("col-sm-4");
+        gifDivCol.addClass("col-4");
     }
 
     //append content to the divs created
     function appendContent(p, giphyImage, gifDivCol) {
         gifDivCol.append(p);
         gifDivCol.append(giphyImage);
-        gifDivRow.append(gifDivCol);
+       // gifDivRow.append(gifDivCol);
     }
 
     //remove container
@@ -63,7 +63,7 @@ $(function () {
         //get the query search term
         var searchTerm = $(this).attr("data");
         var queryURL = "https://api.giphy.com/v1/gifs/search?q=" +
-            searchTerm + "&api_key=dc6zaTOxFJmzC&limit=10";
+            searchTerm + "&api_key=dc6zaTOxFJmzC&limit=12";
 
         console.log(queryURL);
         $.ajax({
@@ -71,19 +71,19 @@ $(function () {
             method: "GET"
         })
             .then(function (response) {
-                
+
                 var results = response.data;
-               
+
                 //create a container for the images
-                var divContainer =$("<div>");
-                divContainer.addClass("container gifs-appear-here ml-0 mt-5");
+                var divContainer = $("<div>");
+                divContainer.addClass("row gifs-appear-here ml-0 mt-5");
 
                 //iterate through the array three by three
-                for (var i = 1; i < results.length; i += 3) {
+                for (var i = 1; i < results.length; i++) {
 
-                    console.log (i);
+                    console.log(i);
                     //create a row and column 
-                    createRow();
+                    //createRow();
                     createCol();
 
                     // create Giphy element to be displayed to the DOM
@@ -91,81 +91,57 @@ $(function () {
 
                     var giphyImage = $("<img>");
                     giphyImage.attr("src", results[i].images.fixed_height_still.url);
-                    giphyImage.attr("data-still",results[i].images.fixed_height_still.url );
-                    giphyImage.attr("data-animate",results[i].images.fixed_height.url );
-                    giphyImage.attr("data-state","still");
-                    giphyImage.addClass(".img-fluid .img-thumbnail rounded float-left gif");
+                    giphyImage.attr("data-still", results[i].images.fixed_height_still.url);
+                    giphyImage.attr("data-animate", results[i].images.fixed_height.url);
+                    giphyImage.attr("data-state", "still");
+                    // giphyImage.addClass(".img-fluid .img-thumbnail rounded float-left gif");
 
                     appendContent(p, giphyImage, gifDivCol);
 
-                    createCol();
-                    var p = $("<h6>").text("Rating: " + results[i + 1].rating);
-                  
+                    
 
-                    var giphyImage = $("<img>");
-                    giphyImage.attr("src", results[i + 1].images.fixed_height_still.url);
-                    giphyImage.attr("data-still",results[i+1].images.fixed_height_still.url );
-                    giphyImage.attr("data-animate",results[i+1].images.fixed_height.url );
-                    giphyImage.attr("data-state","still");
-                    giphyImage.addClass(".img-fluid .img-thumbnail rounded float-left gif");
-
-                    appendContent(p, giphyImage, gifDivCol);
-
-
-                    createCol();
-                    var p = $("<h6>").text("Rating: " + results[i + 2].rating);
-
-                    var giphyImage = $("<img>");
-                    giphyImage.attr("src", results[i + 2].images.fixed_height_still.url);
-                    giphyImage.attr("data-still",results[i+2].images.fixed_height_still.url );
-                    giphyImage.attr("data-animate",results[i+2].images.fixed_height.url );
-                    giphyImage.attr("data-state","still");
-                    giphyImage.addClass(".img-fluid .img-thumbnail rounded float-left gif");
-
-                    appendContent(p, giphyImage, gifDivCol);
-
-                    divContainer.append(gifDivRow , "<br>");
+                    divContainer.append(gifDivCol);
 
                 }
                 $("#result").append(divContainer)
             });
-               
+
     });
 
     //click listener to the gif
     $(document).on("click", ".gif", function () {
         // get the state of the gif
         var state = $(this).attr("data-state");
-        
-  
-       // check if still or animate and change images accordingly 
-        if ( state === "still") {
-          var imgAnimate = $(this).attr("data-animate");
-          $(this).attr("src",imgAnimate);
-          $(this).attr("data-state","animate");  
-        } else {
-          var imgStill= $(this).attr("data-still");
-          console.log(imgStill);
-          $(this).attr("src",imgStill);
-          $(this).attr("data-state","still");  
-        }
-  
-       
-      });
 
-      //click listener to search button
-      $(document).on("click", ".submit", function () {
-        
+
+        // check if still or animate and change images accordingly 
+        if (state === "still") {
+            var imgAnimate = $(this).attr("data-animate");
+            $(this).attr("src", imgAnimate);
+            $(this).attr("data-state", "animate");
+        } else {
+            var imgStill = $(this).attr("data-still");
+            console.log(imgStill);
+            $(this).attr("src", imgStill);
+            $(this).attr("data-state", "still");
+        }
+
+
+    });
+
+    //click listener to search button
+    $(document).on("click", ".submit", function () {
+
         event.preventDefault()
         //push search to the array and reset search 
         arrayGiphy.push($(".userSearch").val());
         $(".userSearch").val("");
 
         //Add button to the DOM
-        lastPosition=arrayGiphy.length-1
+        lastPosition = arrayGiphy.length - 1
         $(".containerButtons").append("<button type=button data=" + arrayGiphy[lastPosition] + " class='buttonDisplay btn btn-success ml-3 mt-2'>" + arrayGiphy[lastPosition]);
-        
 
-      });
+
+    });
 
 })
