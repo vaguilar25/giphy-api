@@ -1,19 +1,16 @@
 $(function () {
 
     //Array of Giphy emotions
-    var arrayGiphy = ["angry",
-        "bored",
-        "disappointed",
-        "drunk",
-        "embarrassed",
+    var arrayGiphy = ["love",
+        "inspired",
+        "sick",
+        "scared",
+        "happy",
         "excited",
         "frustrated",
-        "happy",
+        "shocked",
         "hungry",
-        "inspired",
         "lonely",
-        "love",
-        "nervous",
         "pain",
         "reaction",
         "relaxed",
@@ -26,39 +23,44 @@ $(function () {
     createButtons(arrayGiphy);
 
     function createButtons(array) {
-
+        //iterate through the array 
         for (i = 0; i < array.length; i++) {
 
-            $(".containerButtons").append("<button type=button data=" + array[i] + " class='buttonDisplay btn btn-info ml-3 mt-2'>" + array[i]);
+            $(".containerButtons").append("<button type=button data=" + array[i] + " class='buttonDisplay btn btn-success ml-3 mt-2'>" + array[i]);
         }
 
     };
 
-    
+    //create Row 
     function createRow() {
         gifDivRow = $("<div>");
         gifDivRow.addClass("row");
     }
+
+    //create column
     function createCol() {
         gifDivCol = $("<div>");
         gifDivCol.addClass("col-sm-4");
     }
 
+    //append content to the divs created
     function appendContent(p, giphyImage, gifDivCol) {
         gifDivCol.append(p);
         gifDivCol.append(giphyImage);
         gifDivRow.append(gifDivCol);
     }
 
+    //remove container
     function removeContainer() {
         $(".gifs-appear-here").remove();
     };
 
+    //Click listener to buttons of the array
     $(document).on("click", ".buttonDisplay", function () {
-
+        // clear the container
         removeContainer();
 
-
+        //get the query search term
         var searchTerm = $(this).attr("data");
         var queryURL = "https://api.giphy.com/v1/gifs/search?q=" +
             searchTerm + "&api_key=dc6zaTOxFJmzC&limit=10";
@@ -69,20 +71,22 @@ $(function () {
             method: "GET"
         })
             .then(function (response) {
-                console.log(response);
+                
                 var results = response.data;
-                // results.length
-
+               
+                //create a container for the images
                 var divContainer =$("<div>");
                 divContainer.addClass("container gifs-appear-here ml-0 mt-5");
 
+                //iterate through the array three by three
                 for (var i = 1; i < results.length; i += 3) {
 
-
+                    console.log (i);
+                    //create a row and column 
                     createRow();
                     createCol();
 
-
+                    // create Giphy element to be displayed to the DOM
                     var p = $("<h6>").text("Rating: " + results[i].rating);
 
                     var giphyImage = $("<img>");
@@ -96,7 +100,7 @@ $(function () {
 
                     createCol();
                     var p = $("<h6>").text("Rating: " + results[i + 1].rating);
-                   // p.addClass("font-weight-bold");
+                  
 
                     var giphyImage = $("<img>");
                     giphyImage.attr("src", results[i + 1].images.fixed_height_still.url);
@@ -128,13 +132,13 @@ $(function () {
                
     });
 
-
+    //click listener to the gif
     $(document).on("click", ".gif", function () {
-        
+        // get the state of the gif
         var state = $(this).attr("data-state");
-        console.log(state);
+        
   
-       
+       // check if still or animate and change images accordingly 
         if ( state === "still") {
           var imgAnimate = $(this).attr("data-animate");
           $(this).attr("src",imgAnimate);
@@ -149,10 +153,18 @@ $(function () {
        
       });
 
+      //click listener to search button
       $(document).on("click", ".submit", function () {
+        
         event.preventDefault()
+        //push search to the array and reset search 
         arrayGiphy.push($(".userSearch").val());
-        console.log($(".userSearch").val());
+        $(".userSearch").val("");
+
+        //Add button to the DOM
+        lastPosition=arrayGiphy.length-1
+        $(".containerButtons").append("<button type=button data=" + arrayGiphy[lastPosition] + " class='buttonDisplay btn btn-success ml-3 mt-2'>" + arrayGiphy[lastPosition]);
+        
 
       });
 
