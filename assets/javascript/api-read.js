@@ -40,7 +40,7 @@ $(function () {
     //create column
     function createCol() {
         gifDivCol = $("<div>");
-        gifDivCol.addClass("col-4");
+        gifDivCol.addClass("col-sm-4");
     }
 
     //append content to the divs created
