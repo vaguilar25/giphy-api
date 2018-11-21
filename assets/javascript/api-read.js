@@ -83,7 +83,7 @@ $(function () {
 
                     console.log(i);
                     //create a row and column 
-                    //createRow();
+                    
                     createCol();
 
                     // create Giphy element to be displayed to the DOM
@@ -94,7 +94,7 @@ $(function () {
                     giphyImage.attr("data-still", results[i].images.fixed_height_still.url);
                     giphyImage.attr("data-animate", results[i].images.fixed_height.url);
                     giphyImage.attr("data-state", "still");
-                    // giphyImage.addClass(".img-fluid .img-thumbnail rounded float-left gif");
+                  
 
                     appendContent(p, giphyImage, gifDivCol);
 
