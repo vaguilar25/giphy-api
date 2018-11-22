@@ -40,7 +40,7 @@ $(function () {
     //create column
     function createCol() {
         gifDivCol = $("<div>");
-        gifDivCol.addClass("col-sm-4");
+        gifDivCol.addClass("col-sm-4 mt-5");
     }
 
     //append content to the divs created
@@ -89,7 +89,7 @@ $(function () {
                     // create Giphy element to be displayed to the DOM
                     var p = $("<h6>").text("Rating: " + results[i].rating);
 
-                    var giphyImage = $("<img>");
+                    var giphyImage = $("<img class=gif>");
                     giphyImage.attr("src", results[i].images.fixed_height_still.url);
                     giphyImage.attr("data-still", results[i].images.fixed_height_still.url);
                     giphyImage.attr("data-animate", results[i].images.fixed_height.url);
@@ -113,7 +113,7 @@ $(function () {
         // get the state of the gif
         var state = $(this).attr("data-state");
 
-
+        console.log("this");
         // check if still or animate and change images accordingly 
         if (state === "still") {
             var imgAnimate = $(this).attr("data-animate");
